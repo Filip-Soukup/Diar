@@ -8,10 +8,10 @@ namespace Diar
 {
     internal class Udalost
     {
-        DateTime date;
-        string name;
+        public DateTime date;
+        public string name;
 
-        internal Udalost(DateTime at, string name) 
+        public Udalost(DateTime at, string name) 
         {
             this.date = at;
             this.name = name;
