@@ -45,7 +45,7 @@ namespace Diar
 
         internal void addEvent(DateTime date, string name)
         {
-            if (!udalosti.Contains(new Udalost(date, name)) 
+            if (!udalosti.Contains(new Udalost(date, name)))
             {
                 udalosti.Add(new Udalost(date, name));
                 Console.WriteLine($"Added event: {date.ToString("dd.M.yyyy")} - {name}");
@@ -58,7 +58,7 @@ namespace Diar
 
         internal void removeEvent(DateTime date, string name)
         {
-            if (udalosti.Contains(new Udalost(date, name))
+            if (udalosti.Contains(new Udalost(date, name)))
             {
                 udalosti.Remove(new Udalost(date, name));
                 Console.WriteLine($"Removed event: {date.ToString("dd.M.yyyy")} - {name}");
@@ -76,8 +76,46 @@ namespace Diar
 
         internal Udalost[] getEventsOn(DateTime date)
         {
-            Udalost[] events = udalosti.ToArray();
-            //finnish
+            List<Udalost> result = new List<Udalost>();
+            result = udalosti.Where(item => item.date.Date == date.Date).ToList();
+            Udalost[] output = result.ToArray();
+
+            return output;
+        }
+
+        internal Udalost[] getEventsBefore(DateTime date)
+        {
+            List<Udalost> result = new List<Udalost>();
+            result = udalosti.Where(item => item.date.Date <= date.Date).ToList();
+            Udalost[] output = result.ToArray();
+
+            return output;
+        }
+
+        internal Udalost[] getEventsAfter(DateTime date)
+        {
+            List<Udalost> result = new List<Udalost>();
+            result = udalosti.Where(item => item.date.Date >= date.Date).ToList();
+            Udalost[] output = result.ToArray();
+
+            return output;
+        }
+
+        internal Udalost[] getEventsBetween(DateTime date1, DateTime date2)
+        {
+            List<Udalost> result = new List<Udalost>();
+            result = udalosti.Where(item => item.date.Date >= date1.Date && item.date.Date <= date2.Date).ToList();
+            Udalost[] output = result.ToArray();
+
+            return output;
+        }
+
+        internal void outputEvents(Udalost[] events)
+        {
+            foreach (Udalost item in events) 
+            { 
+                Console.WriteLine(item.getEventName());
+            }
         }
     }
 }
