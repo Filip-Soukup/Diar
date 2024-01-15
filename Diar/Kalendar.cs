@@ -22,17 +22,18 @@ namespace Diar
                 try 
                 {
                     udalosti = JsonConvert.DeserializeObject<List<Udalost>>(jsonString);
+                    Console.WriteLine("Loaded from a savefile");
                 } 
                 catch (Newtonsoft.Json.JsonSerializationException e) 
                 {
-                    Console.WriteLine("savefile is corrupted");
+                    Console.WriteLine("Could not load - Savefile is corrupted");
                     Console.WriteLine(e);
                 }
                 
             }
-            catch (System.IO.FileNotFoundException e)
+            catch (System.IO.FileNotFoundException)
             {
-                Console.WriteLine("savefile does not exist");
+                Console.WriteLine("Could not load - Savefile does not exist");
             }
         }
 

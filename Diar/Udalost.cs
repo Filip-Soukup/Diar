@@ -21,5 +21,21 @@ namespace Diar
         {
             return $"{this.date.ToString("dd.M.yyyy")} - {this.name}";
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            Udalost otherEvent = (Udalost)obj;
+            return this.date == otherEvent.date && this.name == otherEvent.name;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(date, name);
+        }
     }
 }

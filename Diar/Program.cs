@@ -7,6 +7,9 @@ Kalendar kalendar = new Kalendar();
 
 bool run = true;
 string error_msg = "This command is not valid. Type 'help' for list of commands.";
+string separator = "************************************************************";
+
+Console.WriteLine(separator);
 
 while (run)
 {
@@ -23,9 +26,14 @@ help   - Gives help on how to use the app
 add    - Add an event
 remove - Remove an event
 list   - List events
-exit   - Quit application");
+exit   - Quit application
+
+Variables:
+text - a string of text. Words must NOT be seperated by space
+date - a date in format d/m/y
+*    - an aterisk symbol (represents [ALL])");
             }
-            else if (command.Length == 2)
+            else
             {
                 switch (command[1]) 
                 {
@@ -40,7 +48,7 @@ exit   - Quit application");
                         break;
                     case "remove":
                         Console.WriteLine(@"[remove <date> <event name>]
-<date>       - date of the event [date]
+<date>       - date of the event [date d/m/y]
 <event name> - name of the event [text]");
                         break;
                     case "list":
@@ -56,9 +64,6 @@ exit   - Quit application");
                         break;
                 }
             }
-
-
-            Console.WriteLine("Type help <command name> to see detailed info about a command");
             break;
         case "add":
             try
@@ -130,11 +135,7 @@ exit   - Quit application");
             Console.WriteLine(error_msg);
             break;
     }
+    Console.WriteLine(separator);
 }
 
-foreach (Udalost e in kalendar.getAllEvents())
-{
-    Console.WriteLine(e.getEventName());
-}
-
-Console.WriteLine(kalendar.save());
+kalendar.save();
