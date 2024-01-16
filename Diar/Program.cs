@@ -1,5 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using Diar;
+using System;
 using System.ComponentModel.Design;
 using System.Text.Json;
 
@@ -57,10 +58,11 @@ date - a date in format d/m/y
 <secondary date> - secondary date for selection (optional) [date/*]");
                         break;
                     case "exit":
-                        Console.WriteLine(@"[exit]");
+                        Console.WriteLine(@"[exit]
+command has no parameters");
                         break;
                     default:
-                        Console.WriteLine(error_msg);
+                        Console.WriteLine(error_msg + "\nArgument 1 in not an existing command");
                         break;
                 }
             }
@@ -68,27 +70,53 @@ date - a date in format d/m/y
         case "add":
             try
             {
-                kalendar.addEvent(DateTime.Parse(command[1]), command[2]);
+                if (command.Length > 3)
+                {
+                    Console.WriteLine(error_msg + "\nToo many argument(s)");
+                }
+                else if (command.Length < 3)
+                {
+                    Console.WriteLine(error_msg + "\nMissing argument(s)");
+                }
+                else
+                {
+                    kalendar.addEvent(DateTime.Parse(command[1]), command[2]);
+                }
             }
             catch
             {
-                Console.WriteLine(error_msg);
+                Console.WriteLine(error_msg + "\nInvalid argument(s)");
             }
             break;
         case "remove":
             try
             {
-                kalendar.removeEvent(DateTime.Parse(command[1]), command[2]);
+                if (command.Length > 3)
+                {
+                    Console.WriteLine(error_msg + "\nToo many argument(s)");
+                }
+                else if (command.Length < 3)
+                {
+                    Console.WriteLine(error_msg + "\nMissing argument(s)");
+                }
+                else
+                {
+                    kalendar.removeEvent(DateTime.Parse(command[1]), command[2]);
+                }
             }
             catch
             {
-                Console.WriteLine(error_msg);
+                Console.WriteLine(error_msg + "\nInvalid argument(s)");
             }
             break;
         case "list":
-            if (command.Length > 3 || command.Length == 1)
+            if (command.Length > 3)
             {
-                Console.WriteLine(error_msg);
+                Console.WriteLine(error_msg + "\nToo many argument(s)");
+            }
+            else if (command.Length < 2)
+            {
+                Console.WriteLine(error_msg + "\nMissing argument(s)");
             }
             else
             {
@@ -124,15 +152,22 @@ date - a date in format d/m/y
                 }
                 catch
                 {
-                    Console.WriteLine(error_msg);
+                    Console.WriteLine(error_msg + "\nInvalid argument(s)");
                 }
             }
             break;
         case "exit":
-            run = false;
+            if (command.Length > 1)
+            {
+                Console.WriteLine(error_msg + "\nToo many argument(s)");
+            }
+            else
+            {
+                run = false;
+            }
             break;
         default:
-            Console.WriteLine(error_msg);
+            Console.WriteLine(error_msg + "\nTrying to call a non-existing command");
             break;
     }
     Console.WriteLine(separator);
