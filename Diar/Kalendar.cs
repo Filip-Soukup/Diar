@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Newtonsoft.Json;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Diar
 {
@@ -26,15 +28,23 @@ namespace Diar
                 } 
                 catch (Newtonsoft.Json.JsonSerializationException e) 
                 {
-                    Console.WriteLine("Could not load - Savefile is corrupted");
-                    Console.WriteLine(e);
+                    Console.WriteLine("Could not load - Savefile is corrupted");    
+                    #if DEBUG
+                        Console.WriteLine(e);
+                        Console.WriteLine(Environment.CurrentDirectory + "\\" + filename);
+                    #endif
                 }
-                
+                catch (System.IO.IOException e)
+                {
+                    Console.WriteLine(e.ToString());
+                    Environment.Exit(0);
+                }
             }
             catch (System.IO.FileNotFoundException)
             {
                 Console.WriteLine("Could not load - Savefile does not exist");
             }
+            Console.WriteLine($"Today is {DateTime.Now.ToString("d.M.yyyy")}");
         }
 
         internal string save()
@@ -75,6 +85,15 @@ namespace Diar
             return udalosti.ToArray();
         }
 
+        internal Udalost[] getEventsByName(string name)
+        {
+            List<Udalost> result = new List<Udalost>();
+            result = udalosti.Where(item => item.name == name).ToList();
+            Udalost[] output = result.ToArray();
+
+            return output;
+        }
+
         internal Udalost[] getEventsOn(DateTime date)
         {
             List<Udalost> result = new List<Udalost>();
@@ -113,9 +132,16 @@ namespace Diar
 
         internal void outputEvents(Udalost[] events)
         {
-            foreach (Udalost item in events) 
-            { 
-                Console.WriteLine(item.getEventName());
+            if (events.Length == 0) 
+            {
+                Console.WriteLine("No events found");
+            }
+            else 
+            {
+                foreach (Udalost item in events)
+                {
+                    Console.WriteLine(item.getEventName());
+                }
             }
         }
     }

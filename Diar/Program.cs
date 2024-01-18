@@ -9,6 +9,7 @@ Kalendar kalendar = new Kalendar();
 bool run = true;
 string error_msg = "This command is not valid. Type 'help' for list of commands.";
 string separator = "************************************************************";
+DateTime dateValue;
 
 Console.WriteLine(separator);
 
@@ -68,7 +69,7 @@ command has no parameters");
             }
             break;
         case "add":
-            try
+            if (DateTime.TryParse(command[1], out dateValue))
             {
                 if (command.Length > 3)
                 {
@@ -80,17 +81,16 @@ command has no parameters");
                 }
                 else
                 {
-                    kalendar.addEvent(DateTime.Parse(command[1]), command[2]);
+                    kalendar.addEvent(dateValue, command[2]);
                 }
             }
-            catch
+            else
             {
                 Console.WriteLine(error_msg + "\nInvalid argument(s)");
             }
             break;
         case "remove":
-            try
-            {
+            if (DateTime.TryParse(command[1], out dateValue)) {
                 if (command.Length > 3)
                 {
                     Console.WriteLine(error_msg + "\nToo many argument(s)");
@@ -101,10 +101,10 @@ command has no parameters");
                 }
                 else
                 {
-                    kalendar.removeEvent(DateTime.Parse(command[1]), command[2]);
+                    kalendar.removeEvent(dateValue, command[2]);
                 }
             }
-            catch
+            else
             {
                 Console.WriteLine(error_msg + "\nInvalid argument(s)");
             }
@@ -144,9 +144,13 @@ command has no parameters");
                         {
                             kalendar.outputEvents(kalendar.getAllEvents());
                         }
+                        else if (DateTime.TryParse(command[1], out dateValue))
+                        {
+                            kalendar.outputEvents(kalendar.getEventsOn(dateValue));
+                        }
                         else
                         {
-                            kalendar.outputEvents(kalendar.getEventsOn(DateTime.Parse(command[1])));
+                            kalendar.outputEvents(kalendar.getEventsByName(command[1]));
                         }
                     }
                 }
@@ -170,7 +174,6 @@ command has no parameters");
             Console.WriteLine(error_msg + "\nTrying to call a non-existing command");
             break;
     }
+    kalendar.save();
     Console.WriteLine(separator);
 }
-
-kalendar.save();

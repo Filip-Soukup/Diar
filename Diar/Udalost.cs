@@ -19,7 +19,7 @@ namespace Diar
 
         internal string getEventName()
         {
-            return $"{this.date.ToString("dd.M.yyyy")} - {this.name}";
+            return $"{this.date.ToString("d.M.yyyy")} - {this.name}";
         }
 
         public override bool Equals(object obj)
